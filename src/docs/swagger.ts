@@ -1,15 +1,17 @@
 import { createRoute, z } from '@hono/zod-openapi';
 
-const TaskInput = z.object({
+export const TaskInput = z.object({
   title: z.string(),
   userId: z.string(),
+  dueDate: z.string().optional(),
 });
 
-const Task = z.object({
+export const Task = z.object({
   id: z.number(),
   title: z.string(),
   userId: z.string(),
   completed: z.boolean(),
+  dueDate: z.string().nullable(),
 });
 
 // 1. Create Task
@@ -20,7 +22,9 @@ export const createTaskRoute = createRoute({
   request: {
     body: {
       content: {
-        'application/json': TaskInput,
+        'application/json': {
+          schema: TaskInput,
+        },
       },
     },
   },
@@ -28,7 +32,9 @@ export const createTaskRoute = createRoute({
     200: {
       description: 'Created task',
       content: {
-        'application/json': Task,
+        'application/json': {
+          schema: Task,
+        },
       },
     },
   },
@@ -48,7 +54,9 @@ export const getTasksRoute = createRoute({
     200: {
       description: 'List of tasks',
       content: {
-        'application/json': z.array(Task),
+        'application/json': {
+          schema: z.array(Task),
+        },
       },
     },
   },
@@ -66,7 +74,9 @@ export const toggleCompleteRoute = createRoute({
     200: {
       description: 'Toggled task',
       content: {
-        'application/json': Task,
+        'application/json': {
+          schema: Task,
+        },
       },
     },
   },
@@ -84,9 +94,11 @@ export const deleteTaskRoute = createRoute({
     200: {
       description: 'Deleted',
       content: {
-        'application/json': z.object({
-          message: z.string(),
-        }),
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+          }),
+        },
       },
     },
   },
@@ -100,9 +112,11 @@ export const generateTasksRoute = createRoute({
   request: {
     body: {
       content: {
-        'application/json': z.object({
-          topic: z.string().min(1),
-        }),
+        'application/json': {
+          schema: z.object({
+            topic: z.string().min(1),
+          }),
+        },
       },
     },
   },
@@ -110,9 +124,11 @@ export const generateTasksRoute = createRoute({
     200: {
       description: 'Generated tasks',
       content: {
-        'application/json': z.object({
-          tasks: z.array(z.string()),
-        }),
+        'application/json': {
+          schema: z.object({
+            tasks: z.array(z.string()),
+          }),
+        },
       },
     },
   },
