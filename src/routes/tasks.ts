@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { z } from "zod";
-import { db } from "../db";
-import { tasks } from "../schema";
+import { db } from "../db.js";
+import { tasks } from "../schema.js";
 import { eq } from "drizzle-orm";
 
 console.log("✅ tasks.ts loaded");
